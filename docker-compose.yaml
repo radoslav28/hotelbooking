@@ -1,0 +1,20 @@
+services:
+  db:
+    image: mysql:oracle
+    container_name: db_container
+    restart: always
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+
+  app:
+    image: app:amd64-latest
+    container_name: app_container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
