@@ -22,7 +22,7 @@ public class MySQLHotelRepository implements HotelRepository {
     }
 
     @Override
-    public Hotel createHotel(String hotelName, Integer cityId) {
+    public Hotel createHotel(Hotel hotel) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -30,14 +30,15 @@ public class MySQLHotelRepository implements HotelRepository {
         final String CREATE_HOTEL = "INSERT INTO hotels (hotel_name, city_id) " +
                                     "VALUES (:hotelName, :cityId) ";
 
-        parameterSource.addValue("hotelName", hotelName);
-        parameterSource.addValue("cityId", cityId);
+        parameterSource.addValue("hotelName", hotel.getHotelName());
+        parameterSource.addValue("cityId", hotel.getCityId());
 
         namedJdbc.update(CREATE_HOTEL, parameterSource, keyHolder);
 
         Integer id = Objects.requireNonNull(keyHolder.getKey().intValue());
+        hotel.setId(id);
 
-        return new Hotel(id, hotelName, cityId);
+        return hotel;
     }
 
     @Override

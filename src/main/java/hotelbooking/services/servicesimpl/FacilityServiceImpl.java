@@ -1,5 +1,7 @@
 package hotelbooking.services.servicesimpl;
 
+import hotelbooking.models.inputs.FacilityInput;
+import hotelbooking.models.pojo.Facility;
 import hotelbooking.repositories.repositories.FacilityRepository;
 import hotelbooking.services.services.FacilityService;
 import org.modelmapper.ModelMapper;
@@ -18,7 +20,9 @@ public class FacilityServiceImpl implements FacilityService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createFacility(String facility) {
+    public String createFacility(FacilityInput facilityInput) {
+
+        Facility facility = modelMapper.map(facilityInput, Facility.class);
 
         return facilityRepository.createFacility(facility).getFacility();
     }

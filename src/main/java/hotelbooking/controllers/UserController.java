@@ -43,7 +43,7 @@ public class UserController {
     public UserDto createUser(@RequestBody UserInput userInput) {
 
         userInput.setPassword(passwordHash.doHashing(userInput.getPassword()));
-        return userService.createUser(userInput.getEmail(), userInput.getPassword(), userInput.getFirstName(), userInput.getLastName(), userInput.getPhone());
+        return userService.createUser(userInput);
     }
 
     @PostMapping("/login")

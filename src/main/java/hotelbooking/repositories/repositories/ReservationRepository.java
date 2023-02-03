@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ReservationRepository {
-    Reservation createReservation(Integer roomId, Integer userId, Double roomPrice, Date startDate, Date endDate);
+    Reservation createReservation(Reservation reservation);
     Reservation getReservation(Integer id);
     List<Reservation> getReservations();
     void deleteReservation(Integer id);

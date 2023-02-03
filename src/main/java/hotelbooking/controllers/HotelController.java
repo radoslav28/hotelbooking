@@ -20,7 +20,7 @@ public class HotelController {
     private UserTokenIdManager userTokenIdManager;
 
     @PostMapping
-    public HotelDto createHotel(@RequestBody HotelInput hotel, @RequestHeader("Authorization") String token) throws ParseException {
+    public HotelDto createHotel(@RequestBody HotelInput hotelInput, @RequestHeader("Authorization") String token) throws ParseException {
 
         String userRole = userTokenIdManager.getRoleFromToken(token);
 
@@ -28,7 +28,7 @@ public class HotelController {
             throw new AccessDeniedException();
         }
 
-        return hotelService.createHotel(hotel.getHotelName(),hotel.getCityName());
+        return hotelService.createHotel(hotelInput);
     }
 
     @GetMapping("/{id}")

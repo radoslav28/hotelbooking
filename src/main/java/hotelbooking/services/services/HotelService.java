@@ -1,11 +1,12 @@
 package hotelbooking.services.services;
 
 import hotelbooking.models.dto.HotelDto;
+import hotelbooking.models.inputs.HotelInput;
 
 import java.util.List;
 
 public interface HotelService {
-    HotelDto createHotel (String hotelName, String cityName);
+    HotelDto createHotel (HotelInput hotelInput);
     HotelDto getHotel (Integer id);
     List<HotelDto> getHotels();
     void deleteHotel (Integer id);

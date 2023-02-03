@@ -1,6 +1,7 @@
 package hotelbooking.services.servicesimpl;
 
 import hotelbooking.models.dto.*;
+import hotelbooking.models.inputs.ReservationInput;
 import hotelbooking.models.pojo.*;
 import hotelbooking.repositories.repositories.*;
 import hotelbooking.services.services.ReservationService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -29,9 +31,9 @@ public class ReservationServiceImpl implements ReservationService {
     private ModelMapper modelMapper;
 
     @Override
-    public ReservationDto createReservation(Integer roomId, String email, Date startDate, Date endDate) {
+    public ReservationDto createReservation(ReservationInput reservationInput) {
 
-        Room room = roomRepository.getRoom(roomId);
+        Room room = roomRepository.getRoom(reservationInput.getRoomId());
         RoomDto roomDto = modelMapper.map(room, RoomDto.class);
 
         Hotel hotel = hotelRepository.getHotel(room.getHotelId());
@@ -43,14 +45,21 @@ public class ReservationServiceImpl implements ReservationService {
         hotelDto.setCity(cityDto);
         roomDto.setHotel(hotelDto);
 
-        User user = userRepository.getUser(email);
+        User user = userRepository.getUser(reservationInput.getUserEmail());
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
-        Reservation reservation = reservationRepository.createReservation(roomId, user.getId(), room.getPrice(), startDate, endDate);
-        ReservationDto reservationDto = modelMapper.map(reservation,ReservationDto.class);
+        Double fullPrice = room.getPrice() * TimeUnit.DAYS.convert(Math.abs(reservationInput.getEndDate().getTime() - reservationInput.getStartDate().getTime()), TimeUnit.MILLISECONDS);
+
+        Reservation reservation = modelMapper.map(reservationInput, Reservation.class);
+        reservation.setUserId(user.getId());
+        reservation.setFullPrice(fullPrice);
+
+
+        ReservationDto reservationDto = modelMapper.map(reservationRepository.createReservation(reservation),ReservationDto.class);
 
         reservationDto.setRoom(roomDto);
         reservationDto.setUser(userDto);
+        reservationDto.setFullPrice(fullPrice);
 
 
         return reservationDto;

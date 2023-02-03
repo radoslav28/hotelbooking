@@ -1,11 +1,12 @@
 package hotelbooking.services.services;
 
 import hotelbooking.models.dto.CityDto;
+import hotelbooking.models.inputs.CityInput;
 
 import java.util.List;
 
 public interface CityService {
-    CityDto createCity(String cityName, String country);
+    CityDto createCity(CityInput cityInput);
     CityDto getCity(Integer id);
     CityDto getCity(String cityName);
     List<CityDto> getCities();

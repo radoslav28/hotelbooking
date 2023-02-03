@@ -20,18 +20,18 @@ public class MySQLFacilityRepository implements FacilityRepository {
     }
 
     @Override
-    public Facility createFacility(String facility) {
+    public Facility createFacility(Facility facility) {
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
         final String CREATE_FACILITY = "INSERT INTO facilities (facility) " +
                                        "VALUES (:facility) ";
 
-        parameterSource.addValue("facility", facility);
+        parameterSource.addValue("facility", facility.getFacility());
 
         namedJdbc.update(CREATE_FACILITY, parameterSource);
 
-        return new Facility(facility);
+        return facility;
     }
 
     @Override

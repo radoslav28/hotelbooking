@@ -23,7 +23,7 @@ public class MySQLRoomRepository implements RoomRepository {
 
 
     @Override
-    public Room createRoom(Integer hotelId, Integer capacity, Double price) {
+    public Room createRoom(Room room) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -31,15 +31,16 @@ public class MySQLRoomRepository implements RoomRepository {
         final String CREATE_ROOM = "INSERT INTO rooms (hotel_id, capacity, price) " +
                                    "VALUES (:hotelId, :capacity, :price) ";
 
-        parameterSource.addValue("hotelId", hotelId);
-        parameterSource.addValue("capacity", capacity);
-        parameterSource.addValue("price", price);
+        parameterSource.addValue("hotelId", room.getHotelId());
+        parameterSource.addValue("capacity", room.getCapacity());
+        parameterSource.addValue("price", room.getPrice());
 
         namedJdbc.update(CREATE_ROOM, parameterSource, keyHolder);
 
         Integer id = Objects.requireNonNull(keyHolder.getKey().intValue());
+        room.setId(id);
 
-        return new Room(id, hotelId, capacity, price);
+        return room;
     }
 
     @Override

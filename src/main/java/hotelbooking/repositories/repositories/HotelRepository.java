@@ -5,7 +5,7 @@ import hotelbooking.models.pojo.Hotel;
 import java.util.List;
 
 public interface HotelRepository {
-    Hotel createHotel(String hotelName, Integer cityId);
+    Hotel createHotel(Hotel hotel);
     Hotel getHotel(Integer id);
     Hotel getHotel(String hotelName);
     List<Hotel> getHotels();

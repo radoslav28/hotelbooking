@@ -1,6 +1,8 @@
 package hotelbooking.services.servicesimpl;
 
 import hotelbooking.models.dto.UserDto;
+import hotelbooking.models.inputs.UserInput;
+import hotelbooking.models.pojo.User;
 import hotelbooking.repositories.repositories.UserRepository;
 import hotelbooking.services.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -19,11 +21,13 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
 
     @Override
-    public UserDto createUser(String email, String password, String fName, String lName, String phone) {
+    public UserDto createUser(UserInput userInput) {
 
-        UserDto user = modelMapper.map(userRepository.createUser(email, password, fName, lName, phone), UserDto.class);
+        User user = modelMapper.map(userInput, User.class);
 
-        return user;
+        UserDto userDto = modelMapper.map(userRepository.createUser(user), UserDto.class);
+
+        return userDto;
     }
 
     @Override

@@ -21,8 +21,8 @@ public class ReservationController {
     private UserTokenIdManager userTokenIdManager;
 
     @PostMapping
-    public ReservationDto createReservation(@RequestBody ReservationInput reservation) {
-        return reservationService.createReservation(reservation.getRoomId(),reservation.getUserEmail(), reservation.getStartDate(),reservation.getEndDate());
+    public ReservationDto createReservation(@RequestBody ReservationInput reservationInput) {
+        return reservationService.createReservation(reservationInput);
     }
 
     @GetMapping("/{id}")

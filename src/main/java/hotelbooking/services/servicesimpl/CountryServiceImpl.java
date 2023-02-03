@@ -1,5 +1,7 @@
 package hotelbooking.services.servicesimpl;
 
+import hotelbooking.models.inputs.CountryInput;
+import hotelbooking.models.pojo.Country;
 import hotelbooking.repositories.repositories.CityRepository;
 import hotelbooking.repositories.repositories.CountryRepository;
 import hotelbooking.services.services.CountryService;
@@ -21,8 +23,9 @@ public class CountryServiceImpl implements CountryService {
     private ModelMapper modelMapper;
 
     @Override
-    public String createCountry(String country) {
+    public String createCountry(CountryInput countryInput) {
 
+        Country country = modelMapper.map(countryInput, Country.class);
         return countryRepository.createCountry(country).getCountry();
     }
 

@@ -5,7 +5,7 @@ import hotelbooking.models.pojo.City;
 import java.util.List;
 
 public interface CityRepository {
-    City createCity(String cityName, String countryName);
+    City createCity(City city);
     City getCity(Integer id);
     City getCity(String cityName);
     List<City> getCities();

@@ -5,7 +5,7 @@ import hotelbooking.models.pojo.Facility;
 import java.util.List;
 
 public interface FacilityRepository {
-    Facility createFacility(String facility);
+    Facility createFacility(Facility facility);
     List<Facility> getFacilities();
     void deleteFacility(String facility);
 }

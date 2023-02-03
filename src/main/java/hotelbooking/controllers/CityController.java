@@ -29,7 +29,7 @@ public class CityController {
             throw new AccessDeniedException();
         }
 
-        return cityService.createCity(cityInput.getCityName(), cityInput.getCountryName());
+        return cityService.createCity(cityInput);
     }
 
     @GetMapping("/{id}")

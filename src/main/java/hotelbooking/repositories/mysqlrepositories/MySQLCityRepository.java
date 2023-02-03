@@ -22,7 +22,7 @@ public class MySQLCityRepository implements CityRepository {
     }
 
     @Override
-    public City createCity(String cityName, String countryName) {
+    public City createCity(City city) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -30,14 +30,15 @@ public class MySQLCityRepository implements CityRepository {
         final String CREATE_CITY = "INSERT INTO cities (city_name, country_name) " +
                                    "VALUES (:city, :country) ";
 
-        parameterSource.addValue("city", cityName);
-        parameterSource.addValue("country", countryName);
+        parameterSource.addValue("city", city.getCityName());
+        parameterSource.addValue("country", city.getCountryName());
 
         namedJdbc.update(CREATE_CITY, parameterSource, keyHolder);
 
         Integer id = Objects.requireNonNull(keyHolder.getKey().intValue());
+        city.setId(id);
 
-        return new City(id, cityName, countryName);
+        return city;
     }
 
     @Override

@@ -3,6 +3,7 @@ package hotelbooking.services.servicesimpl;
 import hotelbooking.models.dto.CityDto;
 import hotelbooking.models.dto.HotelDto;
 import hotelbooking.models.dto.RoomDto;
+import hotelbooking.models.inputs.RoomInput;
 import hotelbooking.models.pojo.City;
 import hotelbooking.models.pojo.Hotel;
 import hotelbooking.models.pojo.Room;
@@ -32,9 +33,9 @@ public class RoomServiceImpl implements RoomService {
     private ModelMapper modelMapper;
 
     @Override
-    public RoomDto createRoom(String hotelName, Integer capacity, Double price) {
+    public RoomDto createRoom(RoomInput roomInput) {
 
-        Hotel hotel = hotelRepository.getHotel(hotelName);
+        Hotel hotel = hotelRepository.getHotel(roomInput.getHotelName());
         HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);
 
         City city = cityRepository.getCity(hotel.getCityId());
@@ -42,9 +43,10 @@ public class RoomServiceImpl implements RoomService {
 
         hotelDto.setCity(cityDto);
 
-        Room room = roomRepository.createRoom(hotel.getId(), capacity, price);
-        RoomDto roomDto = modelMapper.map(room, RoomDto.class);
+        Room room = modelMapper.map(roomInput, Room.class);
+        room.setHotelId(hotel.getId());
 
+        RoomDto roomDto = modelMapper.map(roomRepository.createRoom(room), RoomDto.class);
         roomDto.setHotel(hotelDto);
 
         return roomDto;

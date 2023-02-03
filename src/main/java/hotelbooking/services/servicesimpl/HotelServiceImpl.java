@@ -2,6 +2,7 @@ package hotelbooking.services.servicesimpl;
 
 import hotelbooking.models.dto.CityDto;
 import hotelbooking.models.dto.HotelDto;
+import hotelbooking.models.inputs.HotelInput;
 import hotelbooking.models.pojo.City;
 import hotelbooking.models.pojo.Hotel;
 import hotelbooking.repositories.repositories.CityRepository;
@@ -28,14 +29,15 @@ public class HotelServiceImpl implements HotelService {
     private ModelMapper modelMapper;
 
     @Override
-    public HotelDto createHotel(String hotelName, String cityName) {
+    public HotelDto createHotel(HotelInput hotelInput) {
 
-        City city = cityRepository.getCity(cityName);
+        City city = cityRepository.getCity(hotelInput.getCityName());
         CityDto cityDto = modelMapper.map(city, CityDto.class);
 
-        Hotel hotel = hotelRepository.createHotel(hotelName, city.getId());
-        HotelDto hotelDto = modelMapper.map(hotel, HotelDto.class);
+        Hotel hotel = modelMapper.map(hotelInput, Hotel.class);
+        hotel.setCityId(city.getId());
 
+        HotelDto hotelDto = modelMapper.map(hotelRepository.createHotel(hotel), HotelDto.class);
         hotelDto.setCity(cityDto);
 
         return hotelDto;

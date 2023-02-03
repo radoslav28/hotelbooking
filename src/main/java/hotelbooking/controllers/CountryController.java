@@ -19,7 +19,7 @@ public class CountryController {
     private UserTokenIdManager userTokenIdManager;
 
     @PostMapping
-    public String createCountry(@RequestBody CountryInput country, @RequestHeader("Authorization") String token) throws ParseException {
+    public String createCountry(@RequestBody CountryInput countryInput, @RequestHeader("Authorization") String token) throws ParseException {
 
         String userRole = userTokenIdManager.getRoleFromToken(token);
 
@@ -27,7 +27,7 @@ public class CountryController {
             throw new AccessDeniedException();
         }
 
-        return countryService.createCountry(country.getCountry());
+        return countryService.createCountry(countryInput);
     }
 
     @GetMapping

@@ -24,7 +24,7 @@ public class MySQLUserRepository implements UserRepository {
 
 
     @Override
-    public User createUser(String email, String password, String fName, String lName, String phone) {
+    public User createUser(User user) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
@@ -32,17 +32,18 @@ public class MySQLUserRepository implements UserRepository {
         final String CREATE_USER = "INSERT INTO users (email, password, first_name, last_name, phone) " +
                                    "VALUES (:email, :password, :firstName, :lastName, :phone) ";
 
-        parameterSource.addValue("email", email);
-        parameterSource.addValue("password", password);
-        parameterSource.addValue("firstName", fName);
-        parameterSource.addValue("lastName", lName);
-        parameterSource.addValue("phone", phone);
+        parameterSource.addValue("email", user.getEmail());
+        parameterSource.addValue("password", user.getPassword());
+        parameterSource.addValue("firstName", user.getFirstName());
+        parameterSource.addValue("lastName", user.getLastName());
+        parameterSource.addValue("phone", user.getPhone());
 
         namedJdbc.update(CREATE_USER, parameterSource, keyHolder);
 
         Integer id = Objects.requireNonNull(keyHolder.getKey().intValue());
+        user.setId(id);
 
-        return new User(id, email, password, fName, lName, phone);
+        return user;
     }
 
     @Override

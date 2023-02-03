@@ -18,18 +18,18 @@ public class MySQLCountryRepository implements CountryRepository {
     }
 
     @Override
-    public Country createCountry(String country) {
+    public Country createCountry(Country country) {
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
         final String CREATE_COUNTRY = "INSERT INTO countries (country) " +
                                       "VALUES (:country) ";
 
-        parameterSource.addValue("country", country);
+        parameterSource.addValue("country", country.getCountry());
 
         namedJdbc.update(CREATE_COUNTRY, parameterSource);
 
-        return new Country(country);
+        return country;
     }
 
     @Override

@@ -24,27 +24,26 @@ public class MySQLReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation createReservation(Integer roomId, Integer userId, Double roomPrice, Date startDate, Date endDate) {
+    public Reservation createReservation(Reservation reservation) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 
-        Double fullPrice = roomPrice * TimeUnit.DAYS.convert(Math.abs(endDate.getTime() - startDate.getTime()), TimeUnit.MILLISECONDS);
-
         final String CREATE_RESERVATION = "INSERT INTO reservations (room_id, user_id, full_price, start_date, end_date) " +
                                           "VALUES (:roomId, :userId, :fullPrice, :startDate, :endDate) ";
 
-        parameterSource.addValue("roomId", roomId);
-        parameterSource.addValue("userId", userId);
-        parameterSource.addValue("fullPrice", fullPrice);
-        parameterSource.addValue("startDate", startDate);
-        parameterSource.addValue("endDate", endDate);
+        parameterSource.addValue("roomId", reservation.getRoomId());
+        parameterSource.addValue("userId", reservation.getUserId());
+        parameterSource.addValue("fullPrice", reservation.getFullPrice());
+        parameterSource.addValue("startDate", reservation.getStartDate());
+        parameterSource.addValue("endDate", reservation.getEndDate());
 
         namedJdbc.update(CREATE_RESERVATION, parameterSource, keyHolder);
 
         Integer id = Objects.requireNonNull(keyHolder.getKey().intValue());
+        reservation.setId(id);
 
-        return new Reservation(id, roomId, userId, roomPrice, startDate, endDate);
+        return reservation;
     }
 
     @Override

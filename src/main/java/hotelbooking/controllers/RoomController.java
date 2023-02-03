@@ -28,7 +28,7 @@ public class RoomController {
             throw new AccessDeniedException();
         }
 
-        return roomService.createRoom(roomInput.getHotelName(),roomInput.getCapacity(), roomInput.getPrice());
+        return roomService.createRoom(roomInput);
     }
 
     @GetMapping("/{id}")

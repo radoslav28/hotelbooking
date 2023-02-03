@@ -20,7 +20,7 @@ public class FacilityController {
     private UserTokenIdManager userTokenIdManager;
 
     @PostMapping
-    public String createFacility(@RequestBody FacilityInput facility, @RequestHeader("Authorization") String token) throws ParseException {
+    public String createFacility(@RequestBody FacilityInput facilityInput, @RequestHeader("Authorization") String token) throws ParseException {
 
         String userRole = userTokenIdManager.getRoleFromToken(token);
 
@@ -28,7 +28,7 @@ public class FacilityController {
             throw new AccessDeniedException();
         }
 
-        return facilityService.createFacility(facility.getFacility());
+        return facilityService.createFacility(facilityInput);
     }
 
     @GetMapping()
